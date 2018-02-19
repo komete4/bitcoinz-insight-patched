@@ -60,4 +60,4 @@ COPY --from=build /root/.zcash-params /bitcoinz/.zcash-params
 RUN chown -R bitcoinz: /bitcoinz
 USER bitcoinz
 WORKDIR /bitcoinz
-CMD ["zcashd", "--datadir=/bitcoinz/data"]
+CMD ["zcashd", "--datadir=/bitcoinz/data", "--printtoconsole"]
