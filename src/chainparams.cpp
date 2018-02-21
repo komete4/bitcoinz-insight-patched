@@ -33,7 +33,6 @@ using namespace std;
 const arith_uint256 maxUint = UintToArith256(uint256S("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
 
 
-
 class CMainParams : public CChainParams {
 public:
     CMainParams() {
@@ -51,7 +50,6 @@ public:
         consensus.nPowMaxAdjustDown = 34;
         consensus.nPowMaxAdjustUp = 34;
         consensus.nPowTargetSpacing = 2.5 * 60;
-        consensus.fPowAllowMinDifficultyBlocks = false;
         /**
          * The message start string should be awesome! ⓩ❤
          */
@@ -100,7 +98,13 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // use name as: echo -n hostname | sha256sum
+        vSeeds.push_back(CDNSSeedData("b8491e7ea3502b8fcda9106923e68b92ef43c331dbf9cfb3c94af473bfbf308b.BTCZ", "btcz.kovach.biz"));
+        vSeeds.push_back(CDNSSeedData("67f534b87f9a2412f845e39102f184e3a48798ed6e2a64d98b915aa12b625e9c.BTCZ", "seed.btcz.life"));
+        vSeeds.push_back(CDNSSeedData("acdd520508bbfa96029867cf64b824fa5e41ebe47918bd4b7855d7a186ed795c.BTCZ", "bzseed.secnode.tk"));
         vSeeds.push_back(CDNSSeedData("4437c91da6e4c4edca56b57bd52c2e11a3fd7d8b04bd9dec9584fb5220f54b05.BTCZ", "btzseed.blockhub.info"));
+        vSeeds.push_back(CDNSSeedData("137f43c75c7915a0dcef3b77920e17fb60f45603cf45ed04ec6cf5383678f29f.BTCZ", "btcz-us.crypt29.net"));
+        vSeeds.push_back(CDNSSeedData("f80236771af4ea523700ed3c53200aa81e3aad51b488e3f6abc22ae8c352f6eb.BTCZ", "btcz.vnminers.com"));
+        vSeeds.push_back(CDNSSeedData("04c5106b3e9e3b7b0e3c849d482475cf4a7753e7ae61e2515f0c6e2e5d5abc92.BTCZ", "dnsseed.ppcall.ru"));
 
         // guarantees the first 2 characters, when base58 encoded, are "t1"
         base58Prefixes[PUBKEY_ADDRESS]     = {0x1C,0xB8};
@@ -113,6 +117,8 @@ public:
         base58Prefixes[EXT_SECRET_KEY]     = {0x04,0x88,0xAD,0xE4};
         // guarantees the first 2 characters, when base58 encoded, are "zc"
         base58Prefixes[ZCPAYMENT_ADDRRESS] = {0x16,0x9A};
+        // guarantees the first 4 characters, when base58 encoded, are "ZiVK"
+        base58Prefixes[ZCVIEWING_KEY]      = {0xA8,0xAB,0xD3};
         // guarantees the first 2 characters, when base58 encoded, are "SK"
         base58Prefixes[ZCSPENDING_KEY]     = {0xAB,0x36};
 
@@ -129,24 +135,31 @@ public:
             ( 0, uint256S("0xf499ee3d498b4298ac6a64205b8addb7c43197e2a660229be65db8a4534d75c1"))
             ( 966, uint256S("0x00000014ee022afd1cafd8cb9e9cb396bf39e68a36e83e3ebc83d206dc1ebacf"))
             ( 1410, uint256S("0x0000007343c5cdaa4c069b45fc80775ab51f54070792ca10a586f33ad7f5b34e"))
-			( 1776, uint256S("0x000000f8f364b114704f0dec7c51a4a1f68e8e05425c65261bd7c246e9672006"))
-			( 1817, uint256S("0x000000c783d9244d884c4208ca83efb71a5ec2127b0410557b0218ce5732619a"))
-			( 1830, uint256S("0x0000011d4dcd27ce6c4d2810c38d58ee7aaca384fb70b80c6ca5082909cc9464"))
+            ( 1776, uint256S("0x000000f8f364b114704f0dec7c51a4a1f68e8e05425c65261bd7c246e9672006"))
+            ( 1817, uint256S("0x000000c783d9244d884c4208ca83efb71a5ec2127b0410557b0218ce5732619a"))
+            ( 1830, uint256S("0x0000011d4dcd27ce6c4d2810c38d58ee7aaca384fb70b80c6ca5082909cc9464"))
             ( 1863, uint256S("0x000000e69d7743dfaca51f25e2b9d1829622c9b81f337fd864853bc0f2a2b8ca"))
-			( 1918, uint256S("0x000000c1c00845a2d23bed939cd1d991f979a7d8637de1e62be097c6588a1872"))
-			( 1929, uint256S("0x0000009ba74be101085199bfea1e32cffe5f2dc945fa417eafd75ce5ed447081"))
-			( 1939, uint256S("0x000000fb643c78413d1efbe6889ea6c5a3242df0c4715b845952c4524cfc22ad"))
-			( 1944, uint256S("0x0000008d240cc7a212c960152f2de6e52bb6724a57b5a41211535ecbe65450c1"))
-			( 1989, uint256S("0x0000015e8724264b731e81b31052d9aace1b8be89c495702001353b055e8a486"))
-			( 1995, uint256S("0x00000132a89578398e906e7e15ea2e3b2c43147afd2db0f9acf4978f4940ddc5"))
-			( 2007, uint256S("0x000000215111f83669484439371ced6e3bc48cd7e7d6be8afa18952206304a1b"))
-			( 2008, uint256S("0x000001877891c7c11f77acf00d35f10b24bac5a7e1f5526ff9adc6c660e233ff"))
-			( 2011, uint256S("0x00000189d75d3f0a0f2d4bb8d5235b38b28ebafb3f3aca9770a656ed61ec24cc"))
-			( 2016, uint256S("0x000000dba6dde8505b0dde0e8be0f3f731e3686087dc43f30b2baf2f904ebeac"))
-			( 10000, uint256S("0x00000002ccb858ec2c35fb79ce2079333461efa50f2b59814558b9ae3ce62a40")),
-			1505597832,
-			6821,
-            953
+            ( 1918, uint256S("0x000000c1c00845a2d23bed939cd1d991f979a7d8637de1e62be097c6588a1872"))
+            ( 1929, uint256S("0x0000009ba74be101085199bfea1e32cffe5f2dc945fa417eafd75ce5ed447081"))
+            ( 1939, uint256S("0x000000fb643c78413d1efbe6889ea6c5a3242df0c4715b845952c4524cfc22ad"))
+            ( 1944, uint256S("0x0000008d240cc7a212c960152f2de6e52bb6724a57b5a41211535ecbe65450c1"))
+            ( 1989, uint256S("0x0000015e8724264b731e81b31052d9aace1b8be89c495702001353b055e8a486"))
+            ( 1995, uint256S("0x00000132a89578398e906e7e15ea2e3b2c43147afd2db0f9acf4978f4940ddc5"))
+            ( 2007, uint256S("0x000000215111f83669484439371ced6e3bc48cd7e7d6be8afa18952206304a1b"))
+            ( 2008, uint256S("0x000001877891c7c11f77acf00d35f10b24bac5a7e1f5526ff9adc6c660e233ff"))
+            ( 2011, uint256S("0x00000189d75d3f0a0f2d4bb8d5235b38b28ebafb3f3aca9770a656ed61ec24cc"))
+            ( 2016, uint256S("0x000000dba6dde8505b0dde0e8be0f3f731e3686087dc43f30b2baf2f904ebeac"))
+            ( 10000, uint256S("0x00000002ccb858ec2c35fb79ce2079333461efa50f2b59814558b9ae3ce62a40"))
+            ( 20675, uint256S("0x00000004804df1618f984fef70c1a210988ade5093b6947c691422fc93013a63")) // Thaddeus Kosciuszko - 200th death anniversary (October 15 2017)
+            ( 40000, uint256S("0x00000005a2d9a94e2e16f9c1e578a2eb46cc267ab7a51539d22ff8aa0096140b"))
+            ( 56000, uint256S("0x000000026a063927c6746acec6c0957d1f69fa2ab1a59c06ce30d60bbbcea92a"))
+            ( 84208, uint256S("0x0000000328e5d0346a78aea2d586154ab3145d51ba3936998253593b0ab2980c")),
+
+            1517704199,     // * UNIX timestamp of last checkpoint block
+            339853,         // * total number of transactions between genesis and last checkpoint
+                            //   (the tx=... number in the SetBestChain debug.log lines)
+            2324.664259935  // * estimated number of transactions per day after checkpoint
+                            //   total number of tx / (checkpoint block height / (24 * 24))
         };
 
         // Founders reward script expects a vector of 2-of-3 multisig addresses
@@ -170,7 +183,6 @@ public:
         consensus.nMajorityWindow = 400;
         consensus.powLimit = uint256S("07ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         assert(maxUint/UintToArith256(consensus.powLimit) >= consensus.nPowAveragingWindow);
-        consensus.fPowAllowMinDifficultyBlocks = true;
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0x1a;
         pchMessageStart[2] = 0xf9;
@@ -203,6 +215,8 @@ public:
         base58Prefixes[EXT_SECRET_KEY]     = {0x04,0x35,0x83,0x94};
         // guarantees the first 2 characters, when base58 encoded, are "zt"
         base58Prefixes[ZCPAYMENT_ADDRRESS] = {0x16,0xB6};
+        // guarantees the first 4 characters, when base58 encoded, are "ZiVt"
+        base58Prefixes[ZCVIEWING_KEY]      = {0xA8,0xAC,0x0C};
         // guarantees the first 2 characters, when base58 encoded, are "ST"
         base58Prefixes[ZCSPENDING_KEY]     = {0xAC,0x08};
 
@@ -224,20 +238,6 @@ public:
 
         // Founders reward script expects a vector of 2-of-3 multisig addresses
         vFoundersRewardAddress = {
-        /*
-            "t2UNzUUx8mWBCRYPRezvA363EYXyEpHokyi", "t2N9PH9Wk9xjqYg9iin1Ua3aekJqfAtE543", "t2NGQjYMQhFndDHguvUw4wZdNdsssA6K7x2", "t27ktmq1kbeCWiQ5TZ7w5npSzcdbBmTB7v6",
-            "t2GcBttAKD2WTHka8HyGc2dfvVTKYZUfHmJ", "t2Q3vxWaD9LrdqUE8Xd9Ddjpr9pUQ2aGotK", "t2TTfWDsYu998fHWzVP9Gns4fgxXXRi1Wzu", "t2KS6R4MMWdSBMjLCiw2iMyhWGRQPmyRqDn",
-            "t2Q2ELrgotWv3Eec6LEtMMiiQ8dtW38u8Tj", "t2AEgJA88vTWAKqxJDFUEJWyHUtQAZi5G1D", "t2HCSdmpq1TQKksuwPQevwAzPTgfJ2rkMbG", "t2HQCPFAUQaUdJWHPhg5pPBxit7inaJzubE",
-            "t2Fzqvq8Y9e6Mn3JNPb982aYsLmq4b5HmhH", "t2HEz7YZQqDUgC5h4y2WSD3mWneqJNVRjjJ", "t2GCR1SCk687Eeo5NEZ23MLsms7JjVWBgfG", "t2KyiPR9Lztq2w1w747X6W4nkUMAGL8M9KN",
-            "t2UxymadyxSyVihmbq7S1yxw5dCBqJ1S4jT", "t2AVeMy7fdmTcJhckqiKRG8B7F1vccEhSqU", "t26m7LwihQzD2sH7ZVhYpPJM5j7kzwbfKW9", "t2DgwUNTe7NxuyPU6fxsB5xJXap3E4yWXrN",
-            "t2U6funcXA11fC9SZehyvUL3rk3Vhuh7fzS", "t284JhyS8LGM72Tx1porSqwrcq3CejthP1p", "t29egu8QcpzKeLoPLqWS6QVMnUUPQdF6eNm", "t29LqD9p9D3B26euBwFi6mfcWu8HPA38VNs",
-            "t28GsAMCxAyLy85XaasddDzaYFTtfewr86y", "t2GV44QyaikQPLUfm6oTfZnw71LLjnR7gDG", "t2U2QzNLQ1jtAu4L6xxVnRXLBsQpQvGRR2g", "t2QKGr5PNan7nrwDgseyHMN9NFeeuUjCh8b",
-            "t2AfS8u6HwBeJpKpbuxztvRjupKQDXqnrwa", "t2CTRQUViQd3CWMhnKhFnUHqDLUyTxmWhJs", "t2CbM9EqszNURqh1UXZBXYhwp1R4GwEhWRE", "t2LM7uYiAsKDU42GNSnMwDxbZ8s1DowQzYH",
-            "t2AgvT35LHR378AE3ouz6xKMhkTLHLJC6nD", "t285EAQXUVyi4NMddJv2QqTrnv45GRMbP8e", "t2EpMRCD5b8f2DCQ37npNULcpZhkjC8muqA", "t2BCmWXrRPiCeQTpizSWKKRPM5X6PS7umDY",
-            "t2DN7X6wDFn5hYKBiBmn3Z98st419yaTVTH", "t2QJj8HeCwQ6mHwqekxxDLZntYpZTHNU62t", "t2QdHBR1Yciqn4j8gpS8DcQZZtYetKvfNj3", "t2E5cpLA1ey5VNxFNcuopeQMq2rH2NHiPdu",
-            "t2EVRGtzjFAyz8CF8ndvLuiJu7qZUfDa93H", "t2KoQDk3BSFadBkuaWdLwchFuQamzw9RE4L", "t2FnR3yhTmuiejEJeu6qpidWTghRd1HpjLt", "t2BAuBAAospDc9d1u5nNGEi6x4NRJBD2PQ2",
-            "t2RtKrLCGcyPkm4a4APg1YY9Wu2m4R2PgrB", "t28aUbSteZzBq2pFgj1K1XNZRZP5mMMyakV", "t2Urdy1ERfkvsFuy6Z4BkhvYGzWdmivfAFR", "t2ADinR4JrvCMd4Q1XGALPajzFrirqvhED6",
-        */
         };
         assert(vFoundersRewardAddress.size() <= consensus.GetLastFoundersRewardBlockHeight());
     }

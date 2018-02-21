@@ -56,7 +56,7 @@ function use_200k_benchmark {
 
 function zcashd_start {
     case "$1" in
-        sendtoaddress|loadwallet)
+        sendtoaddress|loadwallet|listunspent)
             case "$2" in
                 200k-recv)
                     use_200k_benchmark 0
@@ -65,14 +65,14 @@ function zcashd_start {
                     use_200k_benchmark 1
                     ;;
                 *)
-                    echo "Bad arguments."
+                    echo "Bad arguments to zcashd_start."
                     exit 1
             esac
             ;;
         *)
             rm -rf "$DATADIR"
             mkdir -p "$DATADIR/regtest"
-            touch "$DATADIR/bitcoinz.conf"
+            touch "$DATADIR/zcash.conf"
     esac
     ./src/zcashd -regtest -datadir="$DATADIR" -rpcuser=user -rpcpassword=password -rpcport=5983 -showmetrics=0 &
     ZCASHD_PID=$!
@@ -86,7 +86,7 @@ function zcashd_stop {
 
 function zcashd_massif_start {
     case "$1" in
-        sendtoaddress|loadwallet)
+        sendtoaddress|loadwallet|listunspent)
             case "$2" in
                 200k-recv)
                     use_200k_benchmark 0
@@ -95,14 +95,14 @@ function zcashd_massif_start {
                     use_200k_benchmark 1
                     ;;
                 *)
-                    echo "Bad arguments."
+                    echo "Bad arguments to zcashd_massif_start."
                     exit 1
             esac
             ;;
         *)
             rm -rf "$DATADIR"
             mkdir -p "$DATADIR/regtest"
-            touch "$DATADIR/bitcoinz.conf"
+            touch "$DATADIR/zcash.conf"
     esac
     rm -f massif.out
     valgrind --tool=massif --time-unit=ms --massif-out-file=massif.out ./src/zcashd -regtest -datadir="$DATADIR" -rpcuser=user -rpcpassword=password -rpcport=5983 -showmetrics=0 &
@@ -154,6 +154,13 @@ EOF
     xzcat block-107134.tar.xz | tar x -C "$DATADIR/regtest"
 }
 
+
+if [ $# -lt 2 ]
+then
+    echo "$0 : At least two arguments are required!"
+    exit 1
+fi
+
 # Precomputation
 case "$1" in
     *)
@@ -204,11 +211,14 @@ case "$1" in
                 zcash_rpc zcbenchmark sendtoaddress 10 "${@:4}"
                 ;;
             loadwallet)
-                zcash_rpc zcbenchmark loadwallet 10 
+                zcash_rpc zcbenchmark loadwallet 10
+                ;;
+            listunspent)
+                zcash_rpc zcbenchmark listunspent 10
                 ;;
             *)
                 zcashd_stop
-                echo "Bad arguments."
+                echo "Bad arguments to time."
                 exit 1
         esac
         zcashd_stop
@@ -234,6 +244,9 @@ case "$1" in
             verifyequihash)
                 zcash_rpc zcbenchmark verifyequihash 1
                 ;;
+            validatelargetx)
+                zcash_rpc zcbenchmark validatelargetx 1
+                ;;
             trydecryptnotes)
                 zcash_rpc zcbenchmark trydecryptnotes 1 "${@:3}"
                 ;;
@@ -247,9 +260,15 @@ case "$1" in
             sendtoaddress)
                 zcash_rpc zcbenchmark sendtoaddress 1 "${@:4}"
                 ;;
+            loadwallet)
+                # The initial load is sufficient for measurement
+                ;;
+            listunspent)
+                zcash_rpc zcbenchmark listunspent 1
+                ;;
             *)
                 zcashd_massif_stop
-                echo "Bad arguments."
+                echo "Bad arguments to memory."
                 exit 1
         esac
         zcashd_massif_stop
@@ -288,7 +307,7 @@ case "$1" in
                 ;;
             *)
                 zcashd_valgrind_stop
-                echo "Bad arguments."
+                echo "Bad arguments to valgrind."
                 exit 1
         esac
         zcashd_valgrind_stop
@@ -309,12 +328,12 @@ case "$1" in
                 rm -f valgrind.out
                 ;;
             *)
-                echo "Bad arguments."
+                echo "Bad arguments to valgrind-tests."
                 exit 1
         esac
         ;;
     *)
-        echo "Bad arguments."
+        echo "Invalid benchmark type."
         exit 1
 esac
 
