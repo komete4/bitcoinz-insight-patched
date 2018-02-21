@@ -502,7 +502,7 @@ wallet_utility_LDADD = \
   $(BDB_LIBS) \
   $(CRYPTO_LIBS) \
   $(LIBZCASH) \
-	$(LIBSNARK) \
+  $(LIBSNARK) \
   $(LIBZCASH_LIBS)
 endif
 
