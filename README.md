@@ -25,7 +25,7 @@ Install
 # Clone Bitcoinz Repository
 git clone https://github.com/btcz/bitcoinz-insight-patched
 # Build
-cd bitcoinz/
+cd bitcoinz-insight-patched/
 ./zcutil/build.sh -j$(nproc)
 # fetch key
 ./zcutil/fetch-params.sh
